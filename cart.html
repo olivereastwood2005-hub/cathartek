@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — TechVault PC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">TechVault<span>PC</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html" class="active">Products</a></li>
+        </ul>
+      </nav>
+      <a href="cart.html" class="cart-link">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="cart-page">
+    <div class="container">
+      <h1>Shopping cart</h1>
+      <div id="cartContent">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="products.html?category=pc">Pre-built PCs</a></li>
+            <li><a href="products.html?category=components">Components</a></li>
+            <li><a href="products.html?category=peripherals">Peripherals</a></li>
+            <li><a href="products.html?category=accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping & returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© TechVault PC. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const CART_KEY = 'techvault_cart';
+    const ICONS = { default: '📦', 1: '🖥️', 2: '⌨️', 3: '🖱️', 4: '🎧', 5: '🖥️', 6: '🖥️', 7: '💡', 8: '❄️', 9: '📦', 10: '💾', 11: '📷', 12: '🔌', 13: '❄️' };
+
+    function getCart() {
+      try {
+        const raw = localStorage.getItem(CART_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCart(items) {
+      localStorage.setItem(CART_KEY, JSON.stringify(items));
+      document.getElementById('cartCount').textContent = items.reduce((s, i) => s + (i.qty || 1), 0);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const container = document.getElementById('cartContent');
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="cart-empty">
+            <p>Your cart is empty.</p>
+            <a href="products.html" class="btn btn-primary">Shop products</a>
+          </div>
+        `;
+        return;
+      }
+
+      let subtotal = 0;
+      const rows = cart
+        .map((item) => {
+          const total = item.price * (item.qty || 1);
+          subtotal += total;
+          const icon = ICONS[item.id] || ICONS.default;
+          return `
+          <div class="cart-row" data-id="${item.id}">
+            <div class="thumb">${icon}</div>
+            <div class="name">${item.name}</div>
+            <input type="number" class="qty" value="${item.qty || 1}" min="1" data-id="${item.id}" aria-label="Quantity">
+            <span class="row-total">$${total.toFixed(2)}</span>
+            <button type="button" class="remove" data-id="${item.id}" aria-label="Remove">✕</button>
+          </div>
+        `;
+        })
+        .join('');
+
+      container.innerHTML = `
+        <div class="cart-items">${rows}</div>
+        <div class="cart-summary">
+          <div class="line"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+          <div class="line total">Total <span>$${subtotal.toFixed(2)}</span></div>
+          <a href="checkout.html" class="btn btn-primary" style="display:block;text-align:center;text-decoration:none">Proceed to checkout</a>
+        </div>
+      `;
+
+      container.querySelectorAll('.qty').forEach((input) => {
+        input.addEventListener('change', () => {
+          const id = input.getAttribute('data-id');
+          const qty = Math.max(1, parseInt(input.value, 10) || 1);
+          const items = getCart().map((i) =>
+            i.id === id ? { ...i, qty } : i
+          );
+          saveCart(items);
+        });
+      });
+
+      container.querySelectorAll('.remove').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const itemId = btn.getAttribute('data-id');
+          saveCart(getCart().filter((i) => i.id !== itemId));
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('cartCount').textContent = getCart().reduce((s, i) => s + (i.qty || 1), 0);
+      renderCart();
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

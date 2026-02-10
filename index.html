@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechVault PC — PCs & Accessories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">TechVault<span>PC</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+        </ul>
+      </nav>
+      <a href="cart.html" class="cart-link">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Build your rig.<br>Upgrade your setup.</h1>
+        <p>Pre-built PCs, components, and premium accessories. Performance and reliability for work and play.</p>
+        <a href="products.html" class="btn btn-primary">Shop All Products</a>
+        <a href="products.html?category=pc" class="btn btn-secondary">View PCs</a>
+      </div>
+    </section>
+
+    <section class="categories">
+      <div class="container">
+        <h2 class="section-title">Shop by category</h2>
+        <div class="categories-grid">
+          <a href="products.html?category=pc" class="category-card">
+            <div class="icon">🖥️</div>
+            <h3>Pre-built PCs</h3>
+            <p>Ready-to-ship desktops for every budget</p>
+          </a>
+          <a href="products.html?category=components" class="category-card">
+            <div class="icon">⚙️</div>
+            <h3>Components</h3>
+            <p>CPUs, GPUs, RAM, storage & more</p>
+          </a>
+          <a href="products.html?category=peripherals" class="category-card">
+            <div class="icon">⌨️</div>
+            <h3>Peripherals</h3>
+            <p>Keyboards, mice, monitors, headsets</p>
+          </a>
+          <a href="products.html?category=accessories" class="category-card">
+            <div class="icon">🔌</div>
+            <h3>Accessories</h3>
+            <p>Cables, stands, cooling & more</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-section">
+      <div class="container">
+        <h2 class="section-title">Featured products</h2>
+        <div class="products-grid" id="featuredProducts">
+          <!-- Populated by JS or static below -->
+          <article class="product-card">
+            <a href="product.html?id=1">
+              <div class="img-wrap">🖥️</div>
+              <div class="info">
+                <h3>Vault Pro Workstation</h3>
+                <span class="price">$1,299</span>
+                <button class="btn btn-primary" type="button" data-add-cart="1">Add to cart</button>
+              </div>
+            </a>
+          </article>
+          <article class="product-card">
+            <a href="product.html?id=2">
+              <div class="img-wrap">⌨️</div>
+              <div class="info">
+                <h3>Mechanical Keyboard Pro</h3>
+                <span class="price">$149</span>
+                <button class="btn btn-primary" type="button" data-add-cart="2">Add to cart</button>
+              </div>
+            </a>
+          </article>
+          <article class="product-card">
+            <a href="product.html?id=3">
+              <div class="img-wrap">🖱️</div>
+              <div class="info">
+                <h3>Precision Gaming Mouse</h3>
+                <span class="price">$79</span>
+                <button class="btn btn-primary" type="button" data-add-cart="3">Add to cart</button>
+              </div>
+            </a>
+          </article>
+          <article class="product-card">
+            <a href="product.html?id=4">
+              <div class="img-wrap">🎧</div>
+              <div class="info">
+                <h3>Studio Monitor Headphones</h3>
+                <span class="price">$199</span>
+                <button class="btn btn-primary" type="button" data-add-cart="4">Add to cart</button>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="products.html?category=pc">Pre-built PCs</a></li>
+            <li><a href="products.html?category=components">Components</a></li>
+            <li><a href="products.html?category=peripherals">Peripherals</a></li>
+            <li><a href="products.html?category=accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping & returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © TechVault PC. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

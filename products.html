@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — TechVault PC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">TechVault<span>PC</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html" class="active">Products</a></li>
+        </ul>
+      </nav>
+      <a href="cart.html" class="cart-link">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="products-section">
+    <div class="container">
+      <h1 class="section-title">All products</h1>
+
+      <div class="filters-bar">
+        <label for="filterCategory">Category</label>
+        <select id="filterCategory">
+          <option value="">All</option>
+          <option value="pc">Pre-built PCs</option>
+          <option value="components">Components</option>
+          <option value="peripherals">Peripherals</option>
+          <option value="accessories">Accessories</option>
+        </select>
+        <label for="filterSort">Sort</label>
+        <select id="filterSort">
+          <option value="name">Name A–Z</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+        </select>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <!-- Filled by JS from products data -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="products.html?category=pc">Pre-built PCs</a></li>
+            <li><a href="products.html?category=components">Components</a></li>
+            <li><a href="products.html?category=peripherals">Peripherals</a></li>
+            <li><a href="products.html?category=accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping & returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© TechVault PC. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      { id: 1, name: 'Vault Pro Workstation', price: 1299, category: 'pc', icon: '🖥️' },
+      { id: 2, name: 'Mechanical Keyboard Pro', price: 149, category: 'peripherals', icon: '⌨️' },
+      { id: 3, name: 'Precision Gaming Mouse', price: 79, category: 'peripherals', icon: '🖱️' },
+      { id: 4, name: 'Studio Monitor Headphones', price: 199, category: 'peripherals', icon: '🎧' },
+      { id: 5, name: 'Vault Gaming Rig', price: 1899, category: 'pc', icon: '🖥️' },
+      { id: 6, name: '27" 144Hz Gaming Monitor', price: 349, category: 'peripherals', icon: '🖥️' },
+      { id: 7, name: 'RGB LED Strip Kit', price: 39, category: 'accessories', icon: '💡' },
+      { id: 8, name: 'CPU Cooler Tower', price: 89, category: 'components', icon: '❄️' },
+      { id: 9, name: '32GB DDR5 RAM Kit', price: 179, category: 'components', icon: '📦' },
+      { id: 10, name: '1TB NVMe SSD', price: 99, category: 'components', icon: '💾' },
+      { id: 11, name: 'Webcam HD Pro', price: 69, category: 'peripherals', icon: '📷' },
+      { id: 12, name: 'Desk Cable Management Kit', price: 24, category: 'accessories', icon: '🔌' },
+      { id: 13, name: 'Aigo ICE200PRO Air CPU Cooler 2 Heatpipes 3PIN PWM Fan Quiet', price: 12.03, category: 'components', icon: '❄️', image: 'images/aigo-ice200pro-main.png' },
+    ];
+
+    const categoryLabels = {
+      pc: 'Pre-built PCs',
+      components: 'Components',
+      peripherals: 'Peripherals',
+      accessories: 'Accessories',
+    };
+
+    function getQueryCategory() {
+      const params = new URLSearchParams(location.search);
+      return params.get('category') || '';
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      const category = document.getElementById('filterCategory').value || getQueryCategory();
+      const sort = document.getElementById('filterSort').value;
+
+      let list = [...PRODUCTS];
+      if (category) list = list.filter((p) => p.category === category);
+      if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+      if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
+      if (sort === 'price-desc') list.sort((a, b) => b.price - a.price);
+
+      grid.innerHTML = list
+        .map(
+          (p) => `
+        <article class="product-card" data-category="${p.category}">
+          <a href="product.html?id=${p.id}">
+            <div class="img-wrap">${p.image ? `<img src="${p.image}" alt="${p.name}">` : p.icon}</div>
+            <div class="info">
+              <h3>${p.name}</h3>
+              <span class="price">$${p.price.toLocaleString()}</span>
+              <button class="btn btn-primary" type="button" data-add-cart="${p.id}" data-name="${p.name}" data-price="${p.price}">Add to cart</button>
+            </div>
+          </a>
+        </article>
+      `
+        )
+        .join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const catSelect = document.getElementById('filterCategory');
+      const urlCategory = getQueryCategory();
+      if (urlCategory) catSelect.value = urlCategory;
+
+      renderProducts();
+      document.getElementById('filterCategory').addEventListener('change', renderProducts);
+      document.getElementById('filterSort').addEventListener('change', renderProducts);
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

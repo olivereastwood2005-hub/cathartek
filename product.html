@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — TechVault PC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">TechVault<span>PC</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html" class="active">Products</a></li>
+        </ul>
+      </nav>
+      <a href="cart.html" class="cart-link">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="product-detail">
+    <div class="container">
+      <div class="grid" id="productContent">
+        <p class="description">Loading…</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="products.html?category=pc">Pre-built PCs</a></li>
+            <li><a href="products.html?category=components">Components</a></li>
+            <li><a href="products.html?category=peripherals">Peripherals</a></li>
+            <li><a href="products.html?category=accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping & returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© TechVault PC. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      { id: 1, name: 'Vault Pro Workstation', price: 1299, category: 'pc', icon: '🖥️', description: 'Our flagship workstation. Ideal for content creation, development, and multitasking. Includes high-end CPU, 32GB RAM, fast SSD, and quiet cooling.' },
+      { id: 2, name: 'Mechanical Keyboard Pro', price: 149, category: 'peripherals', icon: '⌨️', description: 'Full-size mechanical keyboard with hot-swappable switches, per-key RGB, and a durable aluminum frame. Perfect for typing and gaming.' },
+      { id: 3, name: 'Precision Gaming Mouse', price: 79, category: 'peripherals', icon: '🖱️', description: 'Lightweight gaming mouse with high-DPI sensor, programmable buttons, and a comfortable ergonomic shape for long sessions.' },
+      { id: 4, name: 'Studio Monitor Headphones', price: 199, category: 'peripherals', icon: '🎧', description: 'Closed-back studio headphones with flat response for accurate audio. Comfortable for all-day use and ideal for mixing and listening.' },
+      { id: 5, name: 'Vault Gaming Rig', price: 1899, category: 'pc', icon: '🖥️', description: 'High-performance gaming PC with top-tier GPU and CPU. Built for 1440p and 4K gaming with room to upgrade.' },
+      { id: 6, name: '27" 144Hz Gaming Monitor', price: 349, category: 'peripherals', icon: '🖥️', description: '27-inch IPS panel with 144Hz refresh rate and 1ms response. Supports FreeSync for smooth gameplay.' },
+      { id: 7, name: 'RGB LED Strip Kit', price: 39, category: 'accessories', icon: '💡', description: 'Adhesive RGB LED strip with remote and software control. Easy setup to light up your desk or case.' },
+      { id: 8, name: 'CPU Cooler Tower', price: 89, category: 'components', icon: '❄️', description: 'Tower-style air cooler with dual fans. Handles high TDP CPUs while staying quiet.' },
+      { id: 9, name: '32GB DDR5 RAM Kit', price: 179, category: 'components', icon: '📦', description: '32GB (2x16GB) DDR5 kit with XMP support. Fast speeds for gaming and professional workloads.' },
+      { id: 10, name: '1TB NVMe SSD', price: 99, category: 'components', icon: '💾', description: 'Gen4 NVMe SSD with read speeds up to 7000 MB/s. Perfect for OS, games, and large files.' },
+      { id: 11, name: 'Webcam HD Pro', price: 69, category: 'peripherals', icon: '📷', description: '1080p webcam with auto-focus and built-in microphone. Great for streaming and video calls.' },
+      { id: 12, name: 'Desk Cable Management Kit', price: 24, category: 'accessories', icon: '🔌', description: 'Cable sleeves, clips, and ties to keep your desk tidy. Simple and effective cable management.' },
+      { id: 13, name: 'Aigo ICE200PRO Air CPU Cooler 2 Heatpipes 3PIN PWM Fan Quiet', price: 12.03, category: 'components', icon: '❄️', image: 'images/aigo-ice200pro-main.png', images: ['images/aigo-ice200pro-kit.png'], description: 'Aigo ICE200PRO air CPU cooler with 2 heatpipes and radiator design. 3-pin PWM fan for quiet operation. New, in retail packaging. Compatible with Intel LGA 1150, 1151, 1155, 1156, 1366, 775, 1700, 1200 and AMD Socket AM2, AM2+, AM3, AM3+, AM4, AM5. White fan with white LED. Brand: Aigo. Type: Heatsink.' },
+    ];
+
+    function getProductId() {
+      const params = new URLSearchParams(location.search);
+      return parseInt(params.get('id'), 10);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const id = getProductId();
+      const product = PRODUCTS.find((p) => p.id === id);
+      const container = document.getElementById('productContent');
+
+      if (!product) {
+        container.innerHTML = '<p class="description">Product not found. <a href="products.html">Back to products</a>.</p>';
+        return;
+      }
+
+      document.title = product.name + ' — TechVault PC';
+
+      const galleryImages = product.image
+        ? [product.image, ...(product.images || [])]
+        : [];
+      const hasGallery = galleryImages.length > 0;
+
+      const mainImgHtml = hasGallery
+        ? `<div class="img-wrap"><img id="productMainImg" src="${galleryImages[0]}" alt="${product.name}"></div>`
+        : `<div class="img-wrap">${product.icon}</div>`;
+      const thumbnailsHtml = hasGallery
+        ? `<div class="secondary" role="tablist" aria-label="Product images">
+            ${galleryImages.map((src, i) => `<button type="button" class="thumb ${i === 0 ? 'selected' : ''}" data-src="${src}" aria-label="View image ${i + 1}"><img src="${src}" alt=""></button>`).join('')}
+           </div>`
+        : '';
+      const gallery = hasGallery
+        ? `<div class="product-gallery">${mainImgHtml}${thumbnailsHtml}</div>`
+        : mainImgHtml;
+
+      container.innerHTML = `
+        ${gallery}
+        <div>
+          <h1>${product.name}</h1>
+          <p class="price">$${product.price.toLocaleString()}</p>
+          <p class="description">${product.description}</p>
+          <div class="actions">
+            <button class="btn btn-primary" type="button" data-add-cart="${product.id}" data-name="${product.name}" data-price="${product.price}">Add to cart</button>
+            <a href="products.html" class="btn btn-secondary">Continue shopping</a>
+          </div>
+        </div>
+      `;
+
+      if (hasGallery) {
+        const mainImgEl = document.getElementById('productMainImg');
+        container.querySelectorAll('.thumb').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const src = btn.getAttribute('data-src');
+            if (src && mainImgEl) {
+              mainImgEl.src = src;
+              container.querySelectorAll('.thumb').forEach((b) => b.classList.remove('selected'));
+              btn.classList.add('selected');
+            }
+          });
+        });
+      }
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank you — CATHARTEK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">CATHAR<span>TEK</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+        </ul>
+      </nav>
+      <a href="cart.html" class="cart-link">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="checkout-page">
+    <div class="container">
+      <h1>Thank you for your order</h1>
+      <p class="form-note">
+        Your payment has been received and your order is being processed.
+        We&rsquo;ll email you shortly with confirmation and shipping details.
+      </p>
+      <a href="index.html" class="btn btn-primary">Back to home</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="products.html?category=pc">Pre-built PCs</a></li>
+            <li><a href="products.html?category=components">Components</a></li>
+            <li><a href="products.html?category=peripherals">Peripherals</a></li>
+            <li><a href="products.html?category=accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping & returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© CATHARTEK. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        localStorage.removeItem('techvault_cart');
+      } catch (e) {
+        console.error('Unable to clear cart after checkout', e);
+      }
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>
+

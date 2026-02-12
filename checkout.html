@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — TechVault PC</title>
+  <title>Checkout — CATHARTEK</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
   <header class="nav">
     <div class="container nav-inner">
-      <a href="index.html" class="logo">TechVault<span>PC</span></a>
+      <a href="index.html" class="logo">CATHAR<span>TEK</span></a>
       <nav>
         <ul class="nav-links">
           <li><a href="index.html">Home</a></li>
@@ -64,21 +64,11 @@
           </ul>
         </div>
       </div>
-      <div class="footer-bottom">© TechVault PC. All rights reserved.</div>
+      <div class="footer-bottom">© CATHARTEK. All rights reserved.</div>
     </div>
   </footer>
 
   <script>
-    const CART_KEY = 'techvault_cart';
-
-    function getCart() {
-      try {
-        const raw = localStorage.getItem(CART_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch {
-        return [];
-      }
-    }
 
     function renderCheckout() {
       const cart = getCart();
@@ -128,7 +118,7 @@
                 <label for="country">Country</label>
                 <input type="text" id="country" name="country" required placeholder="United Kingdom" value="United Kingdom">
               </fieldset>
-              <p class="form-note">Payment will be collected on the next step (e.g. Stripe or PayPal).</p>
+              <p class="form-note">You’ll be redirected to our secure payment provider to complete your purchase.</p>
               <button type="submit" class="btn btn-primary btn-block">Continue to payment</button>
             </form>
           </div>
@@ -150,9 +140,14 @@
         </div>
       `;
 
-      document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+      document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Redirecting to payment...';
+        }
         const data = {
           email: form.email.value.trim(),
           phone: form.phone.value.trim(),
@@ -165,9 +160,34 @@
           items: getCart(),
           total: subtotal,
         };
-        // For now: show alert. Next step = send to your backend and redirect to Stripe/PayPal.
-        console.log('Checkout data:', data);
-        alert('Checkout form is ready. Next: connect a payment provider (Stripe or PayPal) and a backend to process orders. See ROADMAP.md for steps.');
+        try {
+          const response = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to start checkout');
+          }
+
+          const result = await response.json();
+
+          if (result && result.url) {
+            window.location.href = result.url;
+          } else {
+            throw new Error('No payment URL returned');
+          }
+        } catch (error) {
+          console.error('Checkout error:', error);
+          alert('There was a problem starting the payment. Please try again in a moment.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Continue to payment';
+          }
+        }
       });
     }
 
